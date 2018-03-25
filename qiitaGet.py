@@ -16,12 +16,13 @@ class super_QiitaClient(QiitaClient):
         geturl = "/items?page={}&per_page=100&query=created%3A>" + getLastWeek(1)
         return self.get(geturl.format(id), params, headers)
 
-def ranksort(data):
-    return sorted(data.items(), key=lambda item: item[1])
-
 def dctSortDesc(dct):
+    i = 0
+    getRank = 20
     for k, v in sorted(dct.items(), key=lambda x: -x[1]):
-      print(str(k) + ": " + str(v))
+      if getRank > i and v > 2:
+        print(str(k) + ": " + str(v))
+        i += 1
 
 def countArray(arrays):
     arrange = {}
@@ -40,15 +41,6 @@ def countArray(arrays):
         before = arrays[i]
     return arrange
 
-def rankGet(dct,rank):
-    i = 0
-    for key, value in dct.items():
-        i += 1
-        if i < rank:
-          print('{}: {}'.format(key, value))
-        else:
-          return rank
-
 accessToken = '6bc2c28ebed49f98070caab7668da51a16b1df0c'
 client = super_QiitaClient(access_token=accessToken)
 i = 0
@@ -65,9 +57,7 @@ for i in range(1,maxArray):
          ora.append(strOrigin.encode('utf-8'))
 
 ora2 = sorted(ora)
-#print(ora2)
 dic = {}
 dic = countArray(ora2)
 dic = dctSortDesc(dic)
 
-#rank = rankGet(dic,10)
