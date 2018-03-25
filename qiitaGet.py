@@ -3,7 +3,6 @@ from qiita_v2.client import QiitaClient
 from datetime import datetime as dt
 from dateutil import relativedelta
 
-#先週日付を取得
 def getLastWeek(i):
    now = dt.now()
    lastweek = now - relativedelta.relativedelta(weeks=i)
@@ -17,7 +16,6 @@ class super_QiitaClient(QiitaClient):
         geturl = "/items?page={}&per_page=100&query=created%3A>" + getLastWeek(1)
         return self.get(geturl.format(id), params, headers)
 
-#ランキングソート
 def ranksort(data):
     return sorted(data.items(), key=lambda item: item[1])
 
@@ -25,6 +23,7 @@ accessToken = '6bc2c28ebed49f98070caab7668da51a16b1df0c'
 client = super_QiitaClient(access_token=accessToken)
 i = 0
 maxArray = 20
+ora = []
 for i in range(1,maxArray):
     res = client.recentlist(str(i))
     ans = res.to_json()
@@ -33,5 +32,7 @@ for i in range(1,maxArray):
     for j in range(0,maxArrayLength):
      strOrigin = ans[j]["user"]["organization"]
      if strOrigin is not None and len(strOrigin) != 0:
-         print(ans[j]["id"])
-         print(strOrigin.encode('utf-8')) 
+         ora.append(strOrigin.encode('utf-8'))
+
+ora2 = sorted(ora)
+print(ora2)
